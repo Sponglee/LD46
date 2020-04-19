@@ -22,11 +22,13 @@ public class LilPlayerController : GrabableObject
             {
                 grabCollider.isTrigger = true;
                 grabRb.gravityScale = 0f;
+                grabRb.velocity = Vector3.up * lilSpeed;
             }
             else
             {
                 grabCollider.isTrigger = false;
                 grabRb.gravityScale = 1f;
+                grabRb.velocity = Vector3.zero;
             }
         }
     }

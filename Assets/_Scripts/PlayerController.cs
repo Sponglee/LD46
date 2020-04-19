@@ -40,7 +40,11 @@ public partial class PlayerController : MonoBehaviour
             Invoke(nameof(StopInteractedCoolDown), 0.5f);
         }
     }
-   
+
+    private void StopInteractedCoolDown()
+    {
+        interactedCoolDown = false;
+    }
 
     [SerializeField] private float gravityScale = 3f;
     [SerializeField] private float climbGravityScale = 1f;
@@ -79,8 +83,32 @@ private void Start()
         if (!Jumped)
         {
             Jumped = Input.GetButtonDown("Jump");
-        } 
+        }
+
+        if (Input.GetButtonDown("Interact") && !InteractedCoolDown)
+        {
+            InteractWIthSurroundings();
+            InteractedCoolDown = true;
+        }
+
     }
+
+
+    public void InteractWIthSurroundings()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.7f);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Debug.Log("Interacted " + colliders[i].gameObject.name);
+            if (colliders[i].gameObject != gameObject && colliders[i].gameObject.GetComponent<IInteractable>() != null)
+            {
+                colliders[i].gameObject.GetComponent<IInteractable>().Interact(handHolder);
+                return;
+            }
+             
+        }
+    }
+
 
     private void FixedUpdate()
     {
@@ -143,18 +171,8 @@ private void Start()
         transform.localScale = theScale;
     }
 
-    private void StopInteractedCoolDown()
-    {
-        interactedCoolDown = false;
-    }
+ 
+    
 
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(!InteractedCoolDown && collision.GetComponent<IInteractable>() != null && Input.GetButtonDown("Interact"))
-        {
-            collision.GetComponent<IInteractable>().Interact(handHolder);
-            InteractedCoolDown = true;
-        }
-    }
+   
 }

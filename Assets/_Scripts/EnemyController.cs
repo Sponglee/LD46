@@ -4,9 +4,27 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
+    private bool interactedCoolDown = false;
+    public bool InteractedCoolDown
+    {
+        get
+        {
+            return interactedCoolDown;
+        }
+
+        set
+        {
+            interactedCoolDown = value;
+            Invoke(nameof(StopInteractedCoolDown), 0.5f);
+        }
+    }
+
+    private void StopInteractedCoolDown()
+    {
+        interactedCoolDown = false;
+    }
 
 
-   
 
     [SerializeField] private Transform target;
     private bool targetAround = false;
@@ -40,9 +58,15 @@ public class EnemyController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Torch") || collision.CompareTag("Wall"))
+        if ((collision.CompareTag("Torch") || collision.CompareTag("Wall")) && !InteractedCoolDown)
         {
+            InteractedCoolDown = true;
             transform.Rotate(Vector2.up, 180f);
+        }
+        else if ((collision.CompareTag("Player") || collision.CompareTag("LilPlayer")) && !InteractedCoolDown)
+        {
+            InteractedCoolDown = true;
+            GameManager.Instance.RestartScene();
         }
     }
 
