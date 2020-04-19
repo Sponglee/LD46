@@ -4,6 +4,7 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
 
+
     public bool CanClimb
     {
         get
@@ -69,27 +70,64 @@ public partial class PlayerController : MonoBehaviour
 
     [SerializeField] private bool Jumped;
     private bool facingRight = true;
+    private GameManager gameManager;
 
     [SerializeField] private Transform handHolder;
 
 private void Start()
     {
+        gameManager = GameManager.Instance;
+
         playerRb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CircleCollider2D>();
     }
 
     private void Update()
     {
-        if (!Jumped)
+        if(!gameManager.GameOverBool)
         {
-            Jumped = Input.GetButtonDown("Jump");
-        }
+            if (!Jumped)
+            {
+                Jumped = Input.GetButtonDown("Jump");
+            }
 
-        if (Input.GetButtonDown("Interact") && !InteractedCoolDown)
-        {
-            InteractWIthSurroundings();
-            InteractedCoolDown = true;
+            if (Input.GetButtonDown("Interact") && !InteractedCoolDown)
+            {
+                InteractWIthSurroundings();
+                InteractedCoolDown = true;
+            }
         }
+        
+
+    }
+
+
+    private void FixedUpdate()
+    {
+        if(!gameManager.GameOverBool)
+        {
+            float v = 0f;
+
+            if (CanClimb)
+            {
+                v = Input.GetAxis("Vertical");
+            }
+
+            float h = Input.GetAxis("Horizontal");
+            Move(h, Jumped, v);
+            Jumped = false;
+            IsGrounded = false;
+
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(bottomPont.position, k_GroundedRadius);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].gameObject != gameObject)
+                    IsGrounded = true;
+            }
+            charAnim.SetBool("Grounded", IsGrounded);
+        }
+       
 
     }
 
@@ -108,32 +146,8 @@ private void Start()
              
         }
     }
+    
 
-
-    private void FixedUpdate()
-    {
-        float v = 0f;
-
-        if(CanClimb)
-        {
-            v = Input.GetAxis("Vertical");
-        }
-       
-        float h = Input.GetAxis("Horizontal");
-        Move(h,Jumped,v);
-        Jumped = false;
-        IsGrounded = false;
-
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(bottomPont.position, k_GroundedRadius);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject != gameObject)
-                IsGrounded = true;
-        }
-        charAnim.SetBool("Grounded", IsGrounded);
-      
-    }
 
     public void Move(float speed, bool jump, float verticalSpeed = 0f)
     {

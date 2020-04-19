@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour {
         else if ((collision.CompareTag("Player") || collision.CompareTag("LilPlayer")) && !InteractedCoolDown)
         {
             InteractedCoolDown = true;
-            GameManager.Instance.RestartScene();
+            GameManager.Instance.TargetEaten(collision.transform);
         }
     }
 

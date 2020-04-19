@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabRb: {fileID: 3713429573229687744}
-  grabCollider: {fileID: 0}
+  grabCollider: {fileID: 8535466285586948028}
   grabPoint: {fileID: 0}
 --- !u!58 &571757578
 CircleCollider2D:
