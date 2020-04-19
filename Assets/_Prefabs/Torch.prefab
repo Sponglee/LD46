@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3610603187191766535}
   - component: {fileID: 3610603187191766532}
   - component: {fileID: 3610603187191766533}
-  - component: {fileID: 1161884719}
   - component: {fileID: 9155699958853038126}
+  - component: {fileID: 3441702580676671011}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Torch
@@ -72,21 +72,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &1161884719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3610603187191766534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60ddb7d9c0ac338498a76fe3aad5ef9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grabRb: {fileID: 3610603187191766533}
-  grabCollider: {fileID: 3610603187191766532}
-  grabPoint: {fileID: 0}
 --- !u!58 &9155699958853038126
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -103,6 +88,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.4}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &3441702580676671011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3610603187191766534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1547d1764476f39498e21ae0f6cf401e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabRb: {fileID: 3610603187191766533}
+  grabCollider: {fileID: 3610603187191766532}
+  grabPoint: {fileID: 0}
+  burnoutDelay: 8
+  IsLit: 1
+  fire: {fileID: 8041252712535317402}
 --- !u!1 &3610603187524455506
 GameObject:
   m_ObjectHideFlags: 0

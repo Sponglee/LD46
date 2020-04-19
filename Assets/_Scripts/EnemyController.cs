@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour {
         set
         {
             interactedCoolDown = value;
-            Invoke(nameof(StopInteractedCoolDown), 0.5f);
+            Invoke(nameof(StopInteractedCoolDown), 0.2f);
         }
     }
 
@@ -34,41 +34,64 @@ public class EnemyController : MonoBehaviour {
     [SerializeField] private Animator enemyAnim;
 
 
-   
-   
-    void FixedUpdate ()
+    private void Start()
     {
-        if(target != null)
-        {
-            if (Vector3.Distance(target.position, transform.position) <= range)
-            {
-                targetAround = true;
-            }
-            else
-            {
-                targetAround = false;
-            }
-        }
-
-        transform.Translate(transform.right * Time.deltaTime,Space.World);
-
-
+        StartCoroutine(MovingSequence());
     }
 
+    private IEnumerator MovingSequence()
+    {
+        while(true)
+        {
+            transform.Translate(transform.right * Time.deltaTime, Space.World);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.CompareTag("Torch") || collision.CompareTag("Wall")) && !InteractedCoolDown)
+        if ((collision.CompareTag("Player") || collision.CompareTag("LilPlayer")) && !InteractedCoolDown)
         {
-            InteractedCoolDown = true;
-            transform.Rotate(Vector2.up, 180f);
-        }
-        else if ((collision.CompareTag("Player") || collision.CompareTag("LilPlayer")) && !InteractedCoolDown)
-        {
+            StopAllCoroutines();
+
+            if (!IsFacingCheck(collision.transform))
+            {
+                transform.Rotate(Vector2.up, 180f);
+            }
+
+            enemyAnim.SetTrigger("EnemyAttack");
             InteractedCoolDown = true;
             GameManager.Instance.TargetEaten(collision.transform);
+
         }
+        else if (!collision.CompareTag("Floor") && !InteractedCoolDown && IsFacingCheck(collision.transform))
+        {
+            ChangeDirection();
+        }
+        else if(collision.CompareTag("Torch") && IsFacingCheck(collision.transform))
+        {
+            if (!collision.GetComponent<TorchController>().IsLit)
+            {
+                return;
+            }
+            else
+            {
+                ChangeDirection();
+            }
+        }
+
     }
 
+    private void ChangeDirection()
+    {
+        InteractedCoolDown = true;
+        transform.Rotate(Vector2.up, 180f);
+    }
 
+    private bool IsFacingCheck(Transform target)
+    {
+        return Vector2.Dot(transform.right, (target.transform.position - transform.position).normalized) > 0;
+    }
 }

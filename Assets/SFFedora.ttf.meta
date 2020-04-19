@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b960a9ce9a0d9a24883217c6d88f092b
+guid: 167eeb0da92af534f84ae7bebad625f6
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,11 +8,10 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Josefin Sans
+  fontName: SF Fedora
   fontNames:
-  - Josefin Sans
-  fallbackFontReferences:
-  - {fileID: 12800000, guid: 5a41f3e44a0df494f84f4e93fedd9ebf, type: 3}
+  - SF Fedora
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

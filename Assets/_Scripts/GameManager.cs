@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
 
     public CinemachineVirtualCameraBase eatenCam;
 
+    public Transform selectionCanvas;
     public Text gemText;
     public bool GemGrabbed = false;
     public Transform gemPanel;
@@ -68,5 +69,14 @@ public class GameManager : Singleton<GameManager>
         eatenCam.LookAt = target;
     }
 
+    public void MoveSelectionCanvas(Transform target)
+    {
+        selectionCanvas.gameObject.SetActive(true);
+        selectionCanvas.position = target.position;
+    }
 
+    public void DisableSelectionCanvas()
+    {
+        selectionCanvas.gameObject.SetActive(false);
+    }
 }

@@ -18,12 +18,12 @@ public partial class PlayerController : MonoBehaviour
             if (value == true)
             {
 
-                playerRb.gravityScale = climbGravityScale;
+                //playerRb.gravityScale = climbGravityScale;
                 playerCollider.isTrigger = true;
             }
             else
             {
-                playerRb.gravityScale = gravityScale;
+                //playerRb.gravityScale = gravityScale;
                 playerCollider.isTrigger = false;
             }
         }
@@ -110,7 +110,16 @@ private void Start()
 
             if (CanClimb)
             {
-                v = Input.GetAxis("Vertical");
+                if (Input.GetAxis("Vertical") > 0)
+                {
+                    playerRb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * maxSpeed);
+                    //target.transform.position = Vector3.Lerp(target.transform.position, upperPoint.position, Time.deltaTime * 1f);
+                }
+                else if (Input.GetAxis("Vertical") < 0)
+                {
+                    playerRb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * maxSpeed);
+                    //target.transform.position = Vector3.Lerp(target.transform.position, bottomPoint.position, Time.deltaTime * 1f);
+                }
             }
 
             float h = Input.GetAxis("Horizontal");
@@ -137,10 +146,10 @@ private void Start()
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.7f);
         for (int i = 0; i < colliders.Length; i++)
         {
-            Debug.Log("Interacted " + colliders[i].gameObject.name);
+            //Debug.Log("Interacted " + colliders[i].gameObject.name);
             if (colliders[i].gameObject != gameObject && colliders[i].gameObject.GetComponent<IInteractable>() != null)
             {
-                colliders[i].gameObject.GetComponent<IInteractable>().Interact(handHolder);
+                colliders[i].gameObject.GetComponent<IInteractable>().Interact();
                 return;
             }
              
@@ -160,16 +169,16 @@ private void Start()
             Flip();
         }
 
-        if (verticalSpeed != 0f)
-        {
-            playerRb.velocity = new Vector2(0f, verticalSpeed*maxSpeed);
-        }
+        //if (verticalSpeed != 0f)
+        //{
+        //    playerRb.velocity = new Vector2(0f, verticalSpeed*maxSpeed);
+        //}
 
 
         playerRb.velocity = new Vector2(speed * maxSpeed, playerRb.velocity.y);
         charAnim.SetFloat("Speed", Mathf.Abs(speed));
 
-        if (IsGrounded && jump && charAnim.GetBool("Grounded"))
+        if (IsGrounded && jump && charAnim.GetBool("Grounded") && !CanClimb)
         {
             IsGrounded = false;
             charAnim.SetBool("Grounded", false);
