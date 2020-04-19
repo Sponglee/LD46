@@ -31,9 +31,20 @@ public class EnemyController : MonoBehaviour {
                 targetAround = false;
             }
         }
+
+        transform.Translate(transform.right * Time.deltaTime,Space.World);
+
+
     }
 
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Torch") || collision.CompareTag("Wall"))
+        {
+            transform.Rotate(Vector2.up, 180f);
+        }
+    }
 
 
 }
