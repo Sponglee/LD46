@@ -164,7 +164,13 @@ private void Start()
     }
 
 
-
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if(collision.transform.CompareTag("Floor"))
+    //    {
+    //        AudioManager.Instance.PlaySound("Jump");
+    //    }
+    //}
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
@@ -250,7 +256,7 @@ private void Start()
             IsGrounded = false;
             charAnim.SetBool("Grounded", false);
             playerRb.AddForce(new Vector2(0f, jumpForce));
-            AudioManager.Instance.PlaySound("jump");
+            //AudioManager.Instance.PlaySound("jump");
         }
     }
 

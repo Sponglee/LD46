@@ -73,7 +73,7 @@ public class GameManager : Singleton<GameManager>
 
     public void TargetEaten(Transform target)
     {
-        AudioManager.Instance.PlaySound("enemyHit");
+        //AudioManager.Instance.PlaySound("enemyHit");
         target.GetComponentInChildren<Animator>().Play("Death");
         GameOverBool = true;
         SetFocusCam(target);
