@@ -248,8 +248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1cbb878e33551347bc633e2b2d9f537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 10
-  stopRange: 0.5
+  targetAround: 0
+  stopRange: 1.2
+  followSpeed: 5
   followTarget: {fileID: 0}
   followRb: {fileID: 1786161480}
   followCollider: {fileID: 1786161479}

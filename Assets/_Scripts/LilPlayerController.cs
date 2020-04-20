@@ -6,7 +6,7 @@ public class LilPlayerController : FoloableTarget,IInteractable
 {
    
     [SerializeField] private bool canClimb = false;
-
+    [SerializeField] private Animator lilAnim;
    
 
     public bool CanClimb
@@ -21,12 +21,12 @@ public class LilPlayerController : FoloableTarget,IInteractable
             canClimb = value;
             if (value == true)
             {
-                Debug.Log("CAN CLIMB");
+                //Debug.Log("CAN CLIMB");
                 followCollider.isTrigger = true;
             }
             else
             {
-                Debug.Log("CANNOT CLIMB");
+                //Debug.Log("CANNOT CLIMB");
                 followCollider.isTrigger = false;
             }
         }
@@ -37,17 +37,36 @@ public class LilPlayerController : FoloableTarget,IInteractable
     private void LateUpdate()
     {
 
-        if (CanClimb)
+        if (followTarget != null)
         {
-            if (followTarget.position.y - transform.position.y > stopRange / 2f)
+            lilAnim.SetBool("Follow",true);   
+            if(CanClimb)
             {
-                followRb.velocity = Vector2.up * followSpeed;
+                if (followTarget.position.y - transform.position.y > stopRange / 2f)
+                {
+
+                    lilAnim.SetBool("Running", true);
+                    followRb.velocity = Vector2.up * followSpeed;
+                }
+                else if (followTarget.position.y - transform.position.y < -stopRange / 2f)
+                {
+
+                    lilAnim.SetBool("Running", true);
+                    followRb.velocity = Vector2.down * followSpeed;
+                }
+                else
+                {
+
+                    lilAnim.SetBool("Running", false);
+                }
             }
-            else if (followTarget.position.y - transform.position.y < -stopRange / 2f)
+            else if (!IsFacingCheck(followTarget.transform))
             {
-                followRb.velocity = Vector2.down * followSpeed;
+                transform.Rotate(Vector2.up, 180f);
             }
         }
+        else
+            lilAnim.SetBool("Follow", false);
 
         //Quaternion lookRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         //float step = 1f * Time.deltaTime;
@@ -55,7 +74,11 @@ public class LilPlayerController : FoloableTarget,IInteractable
     }
 
 
-
+    private bool IsFacingCheck(Transform target)
+    {
+        //Debug.Log(target.gameObject.name + " : " + Vector2.Dot(transform.right*transform.localScale.x, (target.transform.position - transform.position).normalized));
+        return Vector2.Dot(transform.right * transform.localScale.x, (target.transform.position - transform.position).normalized) > 0;
+    }
 
 }
 

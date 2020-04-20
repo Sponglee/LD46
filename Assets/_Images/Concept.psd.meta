@@ -173,6 +173,9 @@ TextureImporter:
   - first:
       213: 1030138679152300993
     second: Concept_32
+  - first:
+      213: -3916526105038871091
+    second: Concept_33
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -981,6 +984,27 @@ TextureImporter:
       bones: []
       spriteID: 1c35348bba9cb4e00800000000000000
       internalID: 1030138679152300993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Concept_33
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 676
+        width: 34
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc52d931244b5a9c0800000000000000
+      internalID: -3916526105038871091
       vertices: []
       indices: 
       edges: []

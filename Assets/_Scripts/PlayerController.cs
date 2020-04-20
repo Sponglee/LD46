@@ -4,7 +4,7 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
 
-
+    
     public bool CanClimb
     {
         get
@@ -42,11 +42,35 @@ public partial class PlayerController : MonoBehaviour
         }
     }
 
+    public Transform ActiveInteraction
+    {
+        get
+        {
+            return activeInteraction;
+        }
+
+        set
+        {
+            activeInteraction = value;
+            if(value == null)
+            {
+                charAnim.SetBool("HasInteractable", false);
+            }
+            else
+            {
+                charAnim.SetBool("HasInteractable", true);
+            }
+        }
+    }
+
     private void StopInteractedCoolDown()
     {
         interactedCoolDown = false;
     }
 
+
+
+    [SerializeField] private Transform activeInteraction = null;
     [SerializeField] private float gravityScale = 3f;
     [SerializeField] private float climbGravityScale = 1f;
     [SerializeField] private bool canClimb = false;
@@ -89,6 +113,7 @@ private void Start()
             if (!Jumped)
             {
                 Jumped = Input.GetButtonDown("Jump");
+               
             }
 
             if (Input.GetButtonDown("Interact") && !InteractedCoolDown)
@@ -97,11 +122,9 @@ private void Start()
                 InteractedCoolDown = true;
             }
         }
-        
-
     }
 
-
+    
     private void FixedUpdate()
     {
         if(!gameManager.GameOverBool)
@@ -141,22 +164,66 @@ private void Start()
     }
 
 
+
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if(collision.GetComponent<IInteractable>() != null)
+    //    {
+    //        GameManager.Instance.MoveSelectionCanvas(collision.transform);
+    //    }
+    //}
+
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.GetComponent<IInteractable>() != null)
+    //    {
+    //        GameManager.Instance.DisableSelectionCanvas();
+    //    }
+    //}
+
+
     public void InteractWIthSurroundings()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.7f);
+
+        Transform lastInteraction = DropActiveInteraction();
+
         for (int i = 0; i < colliders.Length; i++)
         {
             //Debug.Log("Interacted " + colliders[i].gameObject.name);
-            if (colliders[i].gameObject != gameObject && colliders[i].gameObject.GetComponent<IInteractable>() != null)
+            if (colliders[i].gameObject != gameObject && colliders[i].gameObject.GetComponent<IInteractable>() != null && IsFacingCheck(colliders[i].transform) 
+                && lastInteraction != colliders[i].transform)
             {
-                colliders[i].gameObject.GetComponent<IInteractable>().Interact();
-                return;
+                if(colliders[i].transform != ActiveInteraction)
+                {
+                    colliders[i].gameObject.GetComponent<IInteractable>().Interact();
+                    ActiveInteraction = colliders[i].transform;
+                    return;
+                }
             }
              
         }
     }
-    
 
+    private Transform DropActiveInteraction()
+    {
+        if (ActiveInteraction != null)
+        {
+            Transform returnValue = ActiveInteraction;
+            ActiveInteraction.GetComponent<IInteractable>().Interact();
+            ActiveInteraction = null;
+           
+            return returnValue;
+        }
+        return null;
+    }
+
+    private bool IsFacingCheck(Transform target)
+    {
+        Debug.Log(target.gameObject.name + " : " + Vector2.Dot(transform.right * transform.localScale.x, (target.transform.position - transform.position).normalized));
+        return Vector2.Dot(transform.right * transform.localScale.x, (target.transform.position - transform.position).normalized) > 0;
+    }
 
     public void Move(float speed, bool jump, float verticalSpeed = 0f)
     {
@@ -183,6 +250,7 @@ private void Start()
             IsGrounded = false;
             charAnim.SetBool("Grounded", false);
             playerRb.AddForce(new Vector2(0f, jumpForce));
+            AudioManager.Instance.PlaySound("jump");
         }
     }
 

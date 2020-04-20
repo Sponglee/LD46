@@ -5,9 +5,44 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
 
+    [SerializeField] private bool diamondInRange =false;
+    [SerializeField] private bool lilPlayerInRange = false;
+
+
     private GameObject playerReference;
     private GameObject lilPlayerReference;
     private GameObject gemReference;
+
+    public bool LilPlayerInRange
+    {
+        get
+        {
+            return lilPlayerInRange;
+        }
+
+        set
+        {
+            if(value != lilPlayerInRange)
+                GameManager.Instance.TargetInDoor(GameManager.Instance.lilPanel, value);
+            lilPlayerInRange = value;
+        }
+    }
+
+    public bool DiamondInRange
+    {
+        get
+        {
+            return diamondInRange;
+        }
+
+        set
+        {
+
+            if(value != diamondInRange)
+                GameManager.Instance.TargetInDoor(GameManager.Instance.gemPanel, value);
+            diamondInRange = value;
+        }
+    }
 
     private void Start()
     {
@@ -21,28 +56,47 @@ public class DoorController : MonoBehaviour
         {
             DoorCheckForWin(collision.transform);
         }
+
+        if (collision.CompareTag("LilPlayer"))
+        {
+            LilPlayerInRange = true;
+        }
+
+        if (collision.CompareTag("Diamond"))
+        {
+            DiamondInRange = true;
+        }
     }
+    
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("LilPlayer"))
+        {
+            LilPlayerInRange = false;
+           
+        }
 
+        if (collision.CompareTag("Diamond"))
+        {
+            DiamondInRange = false;
+       
+        }
+    }
     public void DoorCheckForWin(Transform target)
     {
-        int checkCount = 0;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject != gameObject && (colliders[i].gameObject == playerReference || colliders[i].gameObject == lilPlayerReference || colliders[i].gameObject == gemReference))
-            {
-                checkCount++;    
-            }
-        }
-         
-        if(checkCount>=3)
+        
+        if(DiamondInRange && LilPlayerInRange)
         {
             GameManager.Instance.WinSequence();
         }
-        else
+        else if(!DiamondInRange)
         {
-            GameManager.Instance.GlowGemPanel();
+            GameManager.Instance.GlowGemPanel(GameManager.Instance.gemReference);
+        }
+        else if(!LilPlayerInRange)
+        {
+            GameManager.Instance.GlowGemPanel(GameManager.Instance.lilPlayerReference);
         }
     }
 

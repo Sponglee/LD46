@@ -41,6 +41,7 @@ public class ButtonController : MonoBehaviour
             transform.GetComponent<BoxCollider2D>().enabled = !transform.GetComponent<BoxCollider2D>().isActiveAndEnabled;
             pad.SetActive(!pad.activeSelf);
             OnButtonPressed.Invoke();
+            AudioManager.Instance.PlaySound("buttonPressed");
     }
 
  

@@ -12,6 +12,8 @@ TagManager:
   - Torch
   - Wall
   - Floor
+  - Puzzle
+  - Diamond
   layers:
   - Default
   - TransparentFX

@@ -66,7 +66,7 @@ public class EnemyController : MonoBehaviour {
             GameManager.Instance.TargetEaten(collision.transform);
 
         }
-        else if (!collision.CompareTag("Floor") && !InteractedCoolDown && IsFacingCheck(collision.transform))
+        else if (!collision.CompareTag("Floor") && !collision.CompareTag("Ladder") && !collision.CompareTag("Puzzle") && !InteractedCoolDown && IsFacingCheck(collision.transform))
         {
             ChangeDirection();
         }
@@ -92,6 +92,7 @@ public class EnemyController : MonoBehaviour {
 
     private bool IsFacingCheck(Transform target)
     {
-        return Vector2.Dot(transform.right, (target.transform.position - transform.position).normalized) > 0;
+        //Debug.Log(target.gameObject.name + " : " + Vector2.Dot(transform.right*transform.localScale.x, (target.transform.position - transform.position).normalized));
+        return Vector2.Dot(transform.right*transform.localScale.x, (target.transform.position - transform.position).normalized) > 0;
     }
 }

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 61a5de9f40b864e4a8c59589656d3d4a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b226e9914f8433c47981f5ed2a507b97, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.51
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -684,15 +684,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f2f43c95f510d408500754deaa3a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnTaskMissing:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTaskChanged:
+    m_PersistentCalls:
+      m_Calls: []
   playerReference: {fileID: 0}
   lilPlayerReference: {fileID: 0}
   gemReference: {fileID: 0}
   GameOverBool: 0
   eatenCam: {fileID: 0}
   selectionCanvas: {fileID: 0}
-  gemText: {fileID: 0}
   GemGrabbed: 0
   gemPanel: {fileID: 0}
+  lilPanel: {fileID: 0}
 --- !u!4 &1351851131
 Transform:
   m_ObjectHideFlags: 0
@@ -974,16 +980,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1832076979}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.2588186, w: 0.965926}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.22944933, y: 0.22944933, z: 0.22944933}
   m_Children: []
   m_Father: {fileID: 410152357}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30.000002}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -163}
+  m_AnchoredPosition: {x: 239, y: 155}
   m_SizeDelta: {x: 4490.82, y: 842.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1832076981

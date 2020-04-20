@@ -4,9 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
+    [System.Serializable]
+    public class OnTaskMissingEvent : UnityEvent<Transform> { }
+    public OnTaskMissingEvent OnTaskMissing;
+
+    [System.Serializable]
+    public class OnTaskChangedEvent : UnityEvent<Transform, bool> { }
+    public OnTaskChangedEvent OnTaskChanged;
+
     public Transform playerReference;
     public Transform lilPlayerReference;
     public Transform gemReference;
@@ -16,9 +25,20 @@ public class GameManager : Singleton<GameManager>
     public CinemachineVirtualCameraBase eatenCam;
 
     public Transform selectionCanvas;
-    public Text gemText;
+
+
     public bool GemGrabbed = false;
     public Transform gemPanel;
+    public Transform lilPanel;
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            QuitToMenu();
+        }
+    }
 
     public void RestartScene()
     {
@@ -27,22 +47,18 @@ public class GameManager : Singleton<GameManager>
 
   
 
-    public void GlowGemPanel()
+    public void GlowGemPanel(Transform panelPanel)
     {
-        gemPanel.GetComponent<Animator>().SetTrigger("PanelGlow");
+        OnTaskMissing.Invoke(panelPanel);
     }
 
-    public void GrabGem(Transform gem)
+    public void TargetInDoor(Transform targetPanel, bool isOn)
     {
-        GemGrabbed = true;
-        gemText.text = "1/1";
+        GemGrabbed = isOn;
+        OnTaskChanged.Invoke(targetPanel, isOn);
     }
 
-    public void DropGem(Transform gem)
-    {
-        GemGrabbed = false;
-        gemText.text = "0/1";
-    }
+  
 
     public void WinSequence()
     {
@@ -57,6 +73,8 @@ public class GameManager : Singleton<GameManager>
 
     public void TargetEaten(Transform target)
     {
+        AudioManager.Instance.PlaySound("enemyHit");
+        target.GetComponentInChildren<Animator>().Play("Death");
         GameOverBool = true;
         SetFocusCam(target);
         Invoke(nameof(RestartScene), 2f);
@@ -78,5 +96,16 @@ public class GameManager : Singleton<GameManager>
     public void DisableSelectionCanvas()
     {
         selectionCanvas.gameObject.SetActive(false);
+    }
+
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+    
+    public void QuitToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

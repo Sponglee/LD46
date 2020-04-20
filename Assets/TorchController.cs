@@ -13,7 +13,10 @@ public class TorchController : GrabableObject
     {
         if(collision.transform.CompareTag("Floor"))
         {
-            Invoke(nameof(PutFireOut), burnoutDelay);
+            Invoke(nameof(TorchHitTheGround),0.5f);
+
+            if(burnoutDelay>0)
+                Invoke(nameof(PutFireOut), burnoutDelay);
         }
 
     }
@@ -41,5 +44,12 @@ public class TorchController : GrabableObject
     public override void DeactivateGrab()
     {
         base.DeactivateGrab();
+    }
+
+    
+    private void TorchHitTheGround()
+    {
+        grabCollider.isTrigger = true;
+        grabRb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 }
