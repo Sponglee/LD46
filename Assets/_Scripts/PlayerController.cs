@@ -4,7 +4,6 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
 
-    
     public bool CanClimb
     {
         get
@@ -100,6 +99,11 @@ public partial class PlayerController : MonoBehaviour
 
 private void Start()
     {
+
+#if UNITY_WEBGL
+        WebGLInput.captureAllKeyboardInput = true;
+#endif
+
         gameManager = GameManager.Instance;
 
         playerRb = GetComponent<Rigidbody2D>();
